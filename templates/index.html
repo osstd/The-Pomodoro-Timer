@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <title>The Pomodoro Timer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .top {
+            background-color: #FFE5D6;
+        }
+        header{
+            h1 {
+                color: #28a745;
+                text-align: left;
+               }
+        }
+        .counter-container {
+            li {
+            font-size:18px;
+            }
+        }
+        .description-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            h1, h2, h3, p {
+                        text-align: left;
+                      }
+            h2 {
+
+                }
+            h3 {
+                margin-top: 25px;
+                font-size:22px;
+                }
+            b {
+                color:red;
+                }
+            }
+        #timer-container {
+            text-align: center;
+            background-color: #FFE5D6;
+        }
+        #tomato-image {
+            max-width: 100%;
+            height: 300px;
+            width: 300px;
+            mix-blend-mode: multiply;
+            opacity: 1;
+        }
+        #counter {
+            text-align:left
+        }
+        .form-group {
+            width: 25%;
+            margin: auto;
+            text-align: center;
+        }
+        .form-control {
+            width: 25%;
+            margin: auto;
+            text-align: center;
+        }
+        .form-control-bottom {
+         margin-bottom: 25px;
+        }
+        @media (max-width: 767px) {
+            #counter {
+                position: relative;
+                margin-top: 20px;
+            }
+            .form-group {
+                width: 100%;
+            }
+        }
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<main>
+    <div class="top pb-2">
+        <header class="mb-4 pt-4 ml-3">
+            <h1>Pomodoro Timer</h1>
+        </header>
+        <div class="container mt-4">
+            <div class="counter-container row justify-content-center">
+                <div class="col-sm-12 d-flex justify-content-center" id="counter">
+                    <ul>
+                        <li><strong>Work sessions per current cycle : <span id="workSessionsPerCycle">0</span></strong>
+                        </li>
+                        <li><strong>Breaks sessions per current cycle : <span id="breaksTakenPerCycle">0</span></strong>
+                        </li>
+                        <li><strong>Full work cycles completed : <span id="fullWorkCycles">0</span></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div id="timer-container">
+                <img id="tomato-image" src="{{url_for('static', filename='assets/img/still.jpg')}}" alt="Tomato GIF">
+
+                <h2 id="timer">25:00</h2>
+                <button id="startButton" class="btn btn-success" onclick="startTimer()">Start</button>
+                <button id="resetButton" class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+
+                <div class="form-group" style="margin-top: 25px;">
+                    <p>It is currently a <strong id="currentSession" style="width: 75px;">_ _ _ _ _</strong> session.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="workDuration">Work mins</label>
+                    <input type="number" class="form-control" id="workDuration" value="25" style="width: 75px;">
+                </div>
+
+                <div class="form-group">
+                    <label for="breakDuration">Break mins</label>
+                    <input type="number" class="form-control" id="breakDuration" value="5" style="width: 75px;">
+                </div>
+
+                <div class="form-group">
+                    <label for="longBreakDuration">Long Break mins</label>
+                    <input type="number" class="form-control form-control-bottom" id="longBreakDuration" value="15"
+                           style="width: 75px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom ">
+        <div class="container pt-4 col-lg-5">
+            <div class="description-container">
+
+                <h2>An online Pomodoro Timer to boost your productivity</h2>
+                <h3>What is The Pomodoro Timer?</h3>
+                <p>The Pomodoro Timer is a customizable timer that works on a desktop or a mobile browser. The aim of
+                    this app is to help you focus on any task you are working on. This app is inspired by the <a
+                            href="https://en.wikipedia.org/wiki/Pomodoro_Technique"><b>Pomodoro Technique.</b></a></p>
+                <h3>So what is the <b>Pomodoro Technique !?</b></h3>
+                <p>The Pomodoro Technique is created by <a href="https://francescocirillo.com">Francesco Cirillo</a>,
+                    for a more productive way to focus deeply on the task at hand. The technique uses a timer to break
+                    down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each
+                    interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen
+                    timer that Cirillo used as a university student. After 5 work sessions and 4 short breaks you have
+                    completed a full work cycle and earned yourself a longer break.</p>
+                <h3>How to use the timer?</h3>
+                <ol>
+                    <li>
+                        Set estimate pomodoros (default = 25min)
+                    </li>
+                    <li>
+                        Select a task to work on
+                    </li>
+                    <li>
+                        Start timer and focus on the task for the duration
+                    </li>
+                    <li>
+                        Take a break for 5 minutes when the alarm ring
+                    </li>
+                    <li>
+                        Take a longer break for 15 minutes when the alarm rings 4 times
+                    </li>
+                    <li>
+                        Repeat steps 3 to 5 until you finish all your tasks scheduled
+                    </li>
+                </ol>
+                <p>* Work, break and long break sessions can all be modified as required, even during the ongoing cycle.
+                    The timer will reflect the change on the following corresponding session.</p>
+            </div>
+        </div>
+        <footer class="footer pt-3 pb-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 order-md-1 order-2 text-md-left" style="font-size: 12px;">&copy;The Pomodoro
+                        Timer <span id="currentYear"></span></div>
+                    <div class="col-md-6 order-md-2 order-1 text-md-right" id="currentDateTime"
+                         style="font-size:14px;"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+
+
+<audio id="alarm" src="{{ url_for('static', filename='assets/sound/alarm.wav') }}"></audio>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+let timer;
+let timeLeft;
+let workSessionsPerCycle = 0;
+let breaksTakenPerCycle = 0;
+let fullWorkCycles = 0;
+
+function startTimer() {
+    imageState(true);
+    timeLeft = document.getElementById("workDuration").value * 60;
+    if (workSessionsPerCycle === 0){
+        workSessionsPerCycle++;
+        updateWorkSessionsPerCycle();
+        }
+    updateTimerDisplay();
+    timer = setInterval(updateTimer, 1000);
+    document.getElementById("startButton").disabled = true;
+}
+
+function resetTimer() {
+    imageState(false);
+    clearInterval(timer);
+    document.getElementById("startButton").disabled = false;
+
+    // Reset all counters and timers
+    timeLeft = 0;
+    updateTimerDisplay();
+    workSessionsPerCycle = 0;
+    breaksTakenPerCycle = 0;
+    fullWorkCycles = 0;
+    updateWorkSessionsPerCycle();
+    updateBreaksTakenPerCycle();
+    updateFullWorkCycles();
+    document.getElementById("currentSession").innerText = '_____';
+}
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById("timer").innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    if (timeLeft === 0) {
+        clearInterval(timer);
+        document.getElementById("startButton").disabled = false;
+
+               // Check if a full work cycle is completed
+               if (workSessionsPerCycle === 5 && breaksTakenPerCycle === 4) {
+                   updateLongBreak();
+                   playAlarm(4);
+                   startLongBreak();
+                   // Reset counters for work sessions and breaks within a cycle
+                   workSessionsPerCycle = 0;
+                   updateWorkSessionsPerCycle();
+                   breaksTakenPerCycle = 0;
+                   updateBreaksTakenPerCycle();
+                   // Update the full work cycles counter
+                   fullWorkCycles++;
+                   updateFullWorkCycles();
+                   }
+               else if ( workSessionsPerCycle - breaksTakenPerCycle === 0 ) {
+                   workSessionsPerCycle++;
+                   updateWorkSessionsPerCycle();
+                   startTimer();
+                   }
+
+               else {
+                    // Check if it's time to update a work session or break session counter
+                    // Break session just finished
+                    breaksTakenPerCycle++;
+                    updateBreaksTakenPerCycle();
+                    playAlarm(2);
+                    startShortBreak();  // start the next work session immediately after a break
+                   }
+        }
+    else {
+        timeLeft--;
+         }
+}
+
+
+function startShortBreak() {
+    timeLeft = document.getElementById("breakDuration").value * 60;
+    updateTimerDisplay();
+    timer = setInterval(updateTimer, 1000);
+    document.getElementById("startButton").disabled = true;
+}
+
+function startLongBreak() {
+    timeLeft = document.getElementById("longBreakDuration").value * 60;
+    updateTimerDisplay();
+    timer = setInterval(updateTimer, 1000);
+    document.getElementById("startButton").disabled = true;
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById("timer").innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function updateWorkSessionsPerCycle() {
+    document.getElementById("workSessionsPerCycle").innerText = workSessionsPerCycle;
+    document.getElementById("currentSession").innerText = 'work';
+}
+
+function updateBreaksTakenPerCycle() {
+    document.getElementById("breaksTakenPerCycle").innerText = breaksTakenPerCycle;
+    document.getElementById("currentSession").innerText = 'break';
+}
+
+function updateLongBreak() {
+    document.getElementById("currentSession").innerText = 'long break';
+}
+
+function updateFullWorkCycles() {
+    document.getElementById("fullWorkCycles").innerText = fullWorkCycles;
+}
+
+function imageState(isLive) {
+var tomatoImage = document.getElementById("tomato-image");
+
+var imagePath = isLive ? "{{url_for('static',filename='assets/img/live.gif')}}" : "{{url_for('static',filename='assets/img/still.jpg')}}"
+
+tomatoImage.src = imagePath
+}
+
+function playAlarm(times) {
+    const alarm = document.getElementById("alarm");
+
+    let playCount = 0;
+
+    function playNext() {
+        if (playCount < times) {
+            const clone = alarm.cloneNode(true);
+            clone.addEventListener('ended', playNext);
+            clone.play();
+            playCount++;
+        }
+    }
+
+    playNext();
+}
+
+function updateCurrentDateTime() {
+var currentDateTimeElement = document.getElementById('currentDateTime');
+var currentDate = new Date();
+
+//Year only for statement
+var currentYear = currentDate.getFullYear();
+
+// Insert year
+document.getElementById("currentYear").innerText = currentYear;
+
+// Format date
+var dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+var formattedDate = currentDate.toLocaleString(undefined, dateOptions);
+
+// Format time
+var timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+var formattedTime = currentDate.toLocaleString(undefined, timeOptions);
+
+// Combine date and time
+var formattedDateTime = formattedDate + ' ' + formattedTime;
+
+currentDateTimeElement.textContent = formattedDateTime;
+}
+
+// Update the current date and time initially
+updateCurrentDateTime();
+
+</script>
+
+</body>
+</html>
